@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Coding Platform Simulation — Codelexity</title>
+  <link rel="stylesheet" href="overlay.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0b0f17;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    header.platform-header {
+      background: #111722;
+      border-bottom: 1px solid #1f293d;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .platform-title-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .platform-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .platform-badge {
+      background: #133a28;
+      color: #4ade80;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid #166534;
+    }
+
+    .header-hint {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .header-hint b {
+      color: #f1f5f9;
+    }
+
+    .header-hint span.hl {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    /* Main Container Grid */
+    main.simulation-grid {
+      display: grid;
+      grid-template-columns: 42% 58%;
+      flex: 1;
+      height: calc(100vh - 54px);
+    }
+
+    /* Left Pane: Problem Description */
+    .problem-pane {
+      background: #0f141f;
+      border-right: 1px solid #1f293d;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .sandbox-callout {
+      background: rgba(14, 165, 233, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #bae6fd;
+      margin-bottom: 24px;
+    }
+
+    .sandbox-callout b {
+      color: #ffffff;
+    }
+
+    .problem-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .problem-desc {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+
+    .example-card {
+      background: #131a27;
+      border: 1px solid #202b3d;
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #38bdf8;
+      margin-bottom: 20px;
+    }
+
+    .example-card .ex-label {
+      color: #f8fafc;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .follow-up {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .follow-up b {
+      color: #f8fafc;
+    }
+
+    /* Right Pane: Editor & Results */
+    .editor-pane {
+      background: #0b0f17;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      overflow-y: auto;
+    }
+
+    /* Toolbar */
+    .editor-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lang-selector-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .selector-label {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-right: 4px;
+    }
+
+    .lang-pill-btn {
+      background: #141c2b;
+      border: 1px solid #243147;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .lang-pill-btn:hover {
+      background: #1c273c;
+      color: #f8fafc;
+      border-color: #3b82f6;
+    }
+
+    .lang-pill-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #3b82f6;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .analyze-btn {
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .analyze-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Code Editor Container */
+    .editor-wrapper {
+      background: #0f1420;
+      border: 1px solid #1f293d;
+      border-radius: 8px;
+      position: relative;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .editor-wrapper-header {
+      background: #141a27;
+      border-bottom: 1px solid #1f293d;
+      padding: 6px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .editor-body {
+      display: flex;
+      min-height: 250px;
+      max-height: 320px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .editor-lines {
+      padding: 12px 10px;
+      background: #0b0f17;
+      color: #475569;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      text-align: right;
+      user-select: none;
+      border-right: 1px solid #182233;
+    }
+
+    .code-input {
+      flex: 1;
+      padding: 12px 14px;
+      background: transparent;
+      color: #e2e8f0;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      white-space: pre;
+      overflow-y: auto;
+      tab-size: 4;
+    }
+
+    /* In-Page Complexity Result Card */
+    .result-section {
+      background: #0f1420;
+      border: 1px solid #1f293d;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .result-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .result-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f1f5f9;
+    }
+
+    .res-lang-pill {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    .res-runtime {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11.5px;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .res-grid-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .res-metric-box {
+      background: #141a27;
+      border: 1px solid #202b3d;
+      border-radius: 6px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70px;
+    }
+
+    .res-metric-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #818cf8;
+      margin-bottom: 4px;
+    }
+
+    .res-metric-val {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 26px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    .res-grid-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .res-details-box {
+      background: #141a27;
+      border: 1px solid #202b3d;
+      border-radius: 6px;
+      padding: 12px 14px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .res-details-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      border-bottom: 1px solid #1c2433;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+
+    .res-breakdown-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: #cbd5e1;
+    }
+
+    .res-breakdown-list li {
+      margin-bottom: 4px;
+    }
+
+    .res-tips-container {
+      background: #0b0f17;
+      border: 1px solid #1c2433;
+      border-radius: 4px;
+      padding: 8px 10px;
+      flex: 1;
+    }
+
+    .res-tips-list {
+      margin: 0;
+      padding-left: 14px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+
+    .res-tips-list li {
+      margin-bottom: 4px;
+    }
+
+    .res-placeholder {
+      list-style: none;
+      margin-left: -14px;
+      color: #64748b;
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) {
+      main.simulation-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .problem-pane {
+        border-right: none;
+        border-bottom: 1px solid #1f293d;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="platform-header">
+    <div class="platform-title-area">
+      <div class="platform-title">Online Coding Platform Simulation</div>
+      <div class="platform-badge">LeetCode & GFG Mock</div>
+    </div>
+    <div class="header-hint">
+      Click <span class="hl">⚡ Codelexity</span> on the bottom-right or use <b>⚡ Analyze Code</b> above!
+    </div>
+  </header>
+
+  <!-- Main Simulation Grid -->
+  <main class="simulation-grid">
+    <!-- Left Column: Problem Information -->
+    <section class="problem-pane">
+      <div class="sandbox-callout">
+        💡 <b>Codelexity Sandbox:</b> Click any of the language example buttons (<b>Python</b>, <b>C++</b>, <b>Java</b>, <b>JavaScript</b>) and click <b>⚡ Analyze Code</b> to see real-time complexity analysis both below the editor and in the floating sidebar!
+      </div>
+
+      <h1 class="problem-title" id="prob-title">1. Two Sum</h1>
+
+      <p class="problem-desc" id="prob-desc">
+        Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.
+        <br><br>
+        You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      </p>
+
+      <div class="example-card" id="prob-example">
+        <div class="ex-label">Example 1:</div>
+        Input: nums = [2,7,11,15], target = 9<br>
+        Output: [0,1]<br>
+        Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+      </div>
+
+      <div class="follow-up" id="prob-followup">
+        <b>Follow-up:</b> Can you come up with an algorithm that is less than O(n²) time complexity?
+      </div>
+    </section>
+
+    <!-- Right Column: Code Editor & Analysis -->
+    <section class="editor-pane">
+      <!-- Toolbar -->
+      <div class="editor-toolbar">
+        <div class="lang-selector-group">
+          <span class="selector-label">Select Language Example:</span>
+          <button class="lang-pill-btn" data-lang="Python">Python</button>
+          <button class="lang-pill-btn active" data-lang="C++">C++</button>
+          <button class="lang-pill-btn" data-lang="Java">Java</button>
+          <button class="lang-pill-btn" data-lang="JavaScript">JavaScript</button>
+          <button class="lang-pill-btn" data-lang="BinarySearch">Binary Search</button>
+          <button class="lang-pill-btn" data-lang="Fibonacci">Fibonacci</button>
+        </div>
+
+        <button class="analyze-btn" id="analyze-btn">
+          ⚡ Analyze Code
+        </button>
+      </div>
+
+      <!-- Code Editor Area -->
+      <div class="editor-wrapper">
+        <div class="editor-wrapper-header">
+          <span id="editor-lang-tag">C++ Solution</span>
+          <span>Monaco Editor Simulation</span>
+        </div>
+        <div class="editor-body">
+          <div class="editor-lines" id="editor-lines">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18</div>
+          <textarea class="code-input" id="code-editor" name="code" spellcheck="false"></textarea>
+        </div>
+      </div>
+
+      <!-- Complexity Analysis Result Card (Below Editor) -->
+      <div class="result-section">
+        <div class="result-header">
+          <div class="result-header-left">
+            <span class="result-title">COMPLEXITY ANALYSIS RESULT</span>
+            <span class="res-lang-pill" id="res-lang-pill">C++</span>
+          </div>
+          <span class="res-runtime">⚡ <span id="res-ms">1ms</span></span>
+        </div>
+
+        <!-- 2 Top Metrics -->
+        <div class="res-grid-metrics">
+          <div class="res-metric-box">
+            <div class="res-metric-label">TIME COMPLEXITY</div>
+            <div class="res-metric-val" id="res-time">O(n)</div>
+          </div>
+          <div class="res-metric-box">
+            <div class="res-metric-label">SPACE COMPLEXITY</div>
+            <div class="res-metric-val" id="res-space">O(n)</div>
+          </div>
+        </div>
+
+        <!-- Clean Badge View: Only Time & Space Complexity -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Complete Inlined Self-Contained Analyzer Engine (Works even if external script is blocked) -->
+  <script>
+    (function (root) {
+      const ORDER = ["O(1)", "O(log n)", "O(n)", "O(n log n)", "O(n^2)", "O(n^3)", "O(2^n)", "O(n!)"];
+
+      function stripNoise(code) {
+        return code
+          .replace(/\/\*[\s\S]*?\*\//g, " ")
+          .replace(/\/\/.*$/gm, " ")
+          .replace(/#.*$/gm, " ")
+          .replace(/"(?:[^"\\]|\\.)*"/g, '""')
+          .replace(/'(?:[^'\\]|\\.)*'/g, "''");
+      }
+
+      function detectLanguage(code) {
+        if (!code || typeof code !== "string" || !code.trim()) return "Unknown";
+
+        let pyScore = 0;
+        let cppScore = 0;
+        let javaScore = 0;
+        let jsScore = 0;
+
+        // Python syntax indicators
+        if (/^\s*(def\s+\w+|class\s+\w+(\([^)]*\))?)\s*:/m.test(code)) pyScore += 12;
+        if (/\bdef\s+[A-Za-z_]\w*\s*\(/.test(code)) pyScore += 9;
+        if (/\bself\b/.test(code)) pyScore += 6;
+        if (/^\s*(import\s+\w+|from\s+\w+\s+import)/m.test(code)) pyScore += 7;
+        if (/\belif\b/.test(code)) pyScore += 8;
+        if (/\b(None|True|False)\b/.test(code)) pyScore += 7;
+        if (/\b(range|len|enumerate|zip)\s*\(/.test(code)) pyScore += 5;
+        if (/^\s*(if|elif|else|for|while|try|except|finally|with)\b[\s\S]*?:\s*$/m.test(code)) pyScore += 5;
+
+        // C++ syntax indicators
+        if (/class\s+Solution\s*\{[\s\S]*?public\s*:/.test(code)) cppScore += 15;
+        if (/\b(public|private|protected)\s*:/.test(code)) cppScore += 9;
+        if (/#include\s*<[a-z_]+>/i.test(code)) cppScore += 12;
+        if (/\bstd::/.test(code)) cppScore += 9;
+        if (/\bcout\s*<<|\bcin\s*>>/.test(code)) cppScore += 9;
+        if (/\b(vector|unordered_map|unordered_set|map|set|stack|queue|priority_queue|pair|deque)\s*</.test(code)) cppScore += 11;
+        if (/\bnullptr\b/.test(code)) cppScore += 8;
+        if (/\busing\s+namespace\s+std;/.test(code)) cppScore += 10;
+        if (/\b(auto|size_t|int&|vector<int>&|TreeNode\*|ListNode\*)\b/.test(code)) cppScore += 7;
+        if (/\b(int|void|bool|double|char|long\s+long)\s+[A-Za-z_]\w*\s*\([^)]*\)\s*\{/.test(code)) cppScore += 7;
+
+        // Java syntax indicators
+        if (/\bpublic\s+(static\s+)?(final\s+)?class\b/.test(code)) javaScore += 12;
+        if (/\bSystem\.out\.(println|print)\b/.test(code)) javaScore += 12;
+        if (/\bpublic\s+[\w<>\[\]]+\s+[A-Za-z_]\w*\s*\([^)]*\)\s*\{/.test(code)) javaScore += 7;
+        if (/\bnew\s+(int\[|String\[|ArrayList|HashMap|HashSet|LinkedList)/.test(code)) javaScore += 9;
+        if (/\b(Integer|Character|Boolean|Double)\b/.test(code)) javaScore += 5;
+        if (/\bboolean\b/.test(code) && !/\bbool\b/.test(code)) javaScore += 6;
+
+        // JavaScript syntax indicators
+        if (/\b(const|let|var)\s+[A-Za-z_]\w*\s*=/.test(code)) jsScore += 8;
+        if (/\bfunction\s*\([A-Za-z_,\s]*\)\s*\{|\bfunction\s+[A-Za-z_]\w*\s*\(/.test(code)) jsScore += 8;
+        if (/=>\s*\{|=>\s*[A-Za-z0-9_]/.test(code)) jsScore += 7;
+        if (/\bconsole\.(log|error|warn)\b/.test(code)) jsScore += 9;
+        if (/\b(===|!==)\b/.test(code)) jsScore += 7;
+        if (/\bnew\s+(Map|Set)\(\)/.test(code) && !/\bMap<|\bSet</.test(code)) jsScore += 7;
+
+        // Structural penalty / boost
+        const braceCount = (code.match(/\{|\}/g) || []).length;
+        const semiCount = (code.match(/;\s*$/gm) || []).length;
+        if (braceCount >= 2 && semiCount >= 2) {
+          pyScore -= 20; // C-family syntax with braces and semicolons cannot be Python
+        } else if (braceCount === 0 && semiCount === 0 && pyScore > 0) {
+          pyScore += 8;
+        }
+
+        const scores = [
+          { lang: "Python", score: pyScore },
+          { lang: "C++", score: cppScore },
+          { lang: "Java", score: javaScore },
+          { lang: "JavaScript", score: jsScore },
+        ];
+
+        scores.sort((a, b) => b.score - a.score);
+        if (scores[0].score > 0) return scores[0].lang;
+
+        if (braceCount === 0 && (code.includes("def ") || code.includes("import "))) return "Python";
+        if (braceCount > 0) return "C++";
+        return "Unknown";
+      }
+
+      const LOOP_RE = /\b(for|while|forEach|foreach)\b/;
+
+      function maxLoopNesting(code, isPython) {
+        const lines = code.split("\n");
+
+        if (isPython) {
+          const stack = [];
+          let max = 0;
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            const indent = line.match(/^\s*/)[0].replace(/\t/g, "    ").length;
+            while (stack.length && indent <= stack[stack.length - 1]) stack.pop();
+            if (/^\s*(for|while)\b/.test(line)) {
+              stack.push(indent);
+              max = Math.max(max, stack.length);
+            }
+          }
+          return max;
+        }
+
+        let depth = 0;
+        let max = 0;
+        const loopDepths = [];
+        let segStart = 0;
+        let paren = 0;
+        for (let i = 0; i < code.length; i++) {
+          const ch = code[i];
+          if (ch === "(") paren++;
+          else if (ch === ")") paren = Math.max(0, paren - 1);
+          else if (ch === "{") {
+            depth++;
+            if (LOOP_RE.test(code.slice(segStart, i))) {
+              loopDepths.push(depth);
+              max = Math.max(max, loopDepths.length);
+            }
+            segStart = i + 1;
+          } else if (ch === "}") {
+            while (loopDepths.length && loopDepths[loopDepths.length - 1] >= depth) loopDepths.pop();
+            depth--;
+            segStart = i + 1;
+          } else if ((ch === ";" || ch === "\n") && paren === 0) {
+            if (ch === ";" && LOOP_RE.test(code.slice(segStart, i))) {
+              max = Math.max(max, loopDepths.length + 1);
+            }
+            segStart = i + 1;
+          }
+        }
+
+        return max;
+      }
+
+      function detectRecursion(code) {
+        const names = [];
+        const re =
+          /(?:def\s+([A-Za-z_]\w*)\s*\(|function\s+([A-Za-z_]\w*)\s*\(|(?:\b(?:public|private|protected|static|final|inline|virtual)\s+)*(?:[\w<>\[\]*&:]+)\s+([A-Za-z_]\w*)\s*\([^;{]*\)\s*\{)/g;
+        let m;
+        while ((m = re.exec(code))) {
+          const n = m[1] || m[2] || m[3];
+          if (n && !["if", "for", "while", "switch", "catch", "return", "sizeof"].includes(n)) {
+            names.push(n);
+          }
+        }
+        let calls = 0;
+        let found = null;
+        for (const n of new Set(names)) {
+          const body = code.split(new RegExp(`\\b${n}\\s*\\(`)).length - 1;
+          if (body >= 2) {
+            calls = Math.max(calls, body - 1);
+            found = n;
+          }
+        }
+        return found ? { name: found, branches: calls } : null;
+      }
+
+      function extractBodyCode(code) {
+        return code.replace(/\b([A-Za-z_]\w*)\s*\([^)]*\)\s*[{:]/g, "");
+      }
+
+      const DS_RULES = [
+        [/\bvector\s*<[A-Za-z0-9_<>\s]+>\s+[A-Za-z_]|ArrayList\s*<|new\s+\w+\[\s*\w+\s*\]|\blist\(/, "Array / list"],
+        [/HashMap|unordered_map|\bmap<|\bdict\(|new\s+Map|\bseen\s*=\s*\{\}/, "Hash map"],
+        [/HashSet|unordered_set|\bset<|\bset\(|new\s+Set/, "Hash set"],
+        [/\bstack\s*<|Stack<|\.push\(|\.pop\(/, "Stack"],
+        [/\bqueue\s*<|Queue<|\bdeque\b|LinkedList/, "Queue / deque"],
+        [/priority_queue|PriorityQueue|heapq/, "Heap / priority queue"],
+      ];
+
+      function generateSuggestions(ctx) {
+        const out = [];
+        if (ctx.nesting >= 2 && !ctx.hasHash) {
+          out.push("Nested loops detected without hash map — using a Hash Map often reduces time from O(n²) to O(n).");
+        }
+        if (ctx.nesting >= 3) {
+          out.push("Three or more nested loops detected — explore two pointers, sliding window, or prefix sums to lower complexity.");
+        }
+        if (ctx.rec && ctx.rec.branches >= 2 && !ctx.memo) {
+          out.push("Branching recursion without memoization — use Dynamic Programming (memoization or tabulation) to avoid exponential O(2^n) work.");
+        }
+        if (ctx.sorted && ctx.nesting >= 1) {
+          out.push("Data is sorted — a two-pointer technique or binary search scan may eliminate the inner loop.");
+        }
+        if (ctx.space === "O(n^2)") {
+          out.push("2D matrix or DP table detected — many dynamic programming states can be optimized into a 1D rolling array (O(n) space).");
+        }
+        if (ctx.isOptimalTwoSum) {
+          out.push("Optimal hash map lookup pattern — achieves linear O(n) time. No further asymptotic optimization needed.");
+        }
+        if (ctx.isBinarySearch) {
+          out.push("Optimal logarithmic search pattern — halving the interval guarantees O(log n) time.");
+        }
+        if (!out.length) {
+          out.push("No obvious inefficiency detected — algorithmic complexity appears optimal for this pattern.");
+        }
+        return out;
+      }
+
+      function analyze(code, explicitLanguage) {
+        if (!code || !code.trim()) {
+          return {
+            time: "—",
+            space: "—",
+            confidence: 0,
+            notes: ["No code detected in the editor."],
+            patterns: [],
+            tips: ["Write or paste code in the editor to see real-time complexity analysis."],
+            language: explicitLanguage || "—",
+          };
+        }
+
+        // Normalize explicit language
+        let normExplicit = explicitLanguage;
+        if (normExplicit && typeof normExplicit === "string" && normExplicit !== "Unknown" && normExplicit !== "—") {
+          const lower = normExplicit.trim().toLowerCase();
+          if (lower === "c" || lower === "cpp" || lower === "c++" || lower === "c_cpp" || lower === "cplusplus" || lower.startsWith("c ")) {
+            normExplicit = "C++";
+          } else if (lower.includes("python") || lower === "py" || lower === "python3") {
+            normExplicit = "Python";
+          } else if (lower === "java") {
+            normExplicit = "Java";
+          } else if (lower.includes("javascript") || lower === "js" || lower.includes("typescript") || lower === "ts") {
+            normExplicit = "JavaScript";
+          }
+        }
+
+        const detectedLang = detectLanguage(code);
+        let language;
+
+        if (detectedLang !== "Unknown") {
+          language = detectedLang;
+        } else if (normExplicit && normExplicit !== "Unknown" && normExplicit !== "—") {
+          language = normExplicit;
+        } else {
+          language = "C++";
+        }
+
+        const isPython = language === "Python";
+        const src = stripNoise(code);
+        const bodyOnly = extractBodyCode(src);
+        const breakdown = [];
+        let timeIdx = 0;
+
+        // 1. Binary-search halving
+        const isBinarySearch =
+          /(mid|lo|hi|low|high)\s*=|\/\s*2\b|>>\s*1\b|\/\/\s*2\b/.test(src) && /while|for/.test(src);
+
+        // 2. Loop nesting analysis
+        const nesting = maxLoopNesting(src, isPython);
+        if (isBinarySearch && nesting <= 1) {
+          timeIdx = 1; // O(log n)
+          breakdown.push("Interval halving pattern detected (binary search) → O(log n) time.");
+        } else if (nesting >= 1) {
+          if (nesting === 1) {
+            breakdown.push("Single loop traversal detected (linear O(n) pass over input elements).");
+            timeIdx = Math.max(timeIdx, 2); // O(n)
+          } else if (nesting === 2) {
+            breakdown.push("2 nested loops detected (inner loop executes for each outer iteration) → O(n²).");
+            timeIdx = Math.max(timeIdx, 4); // O(n^2)
+          } else if (nesting === 3) {
+            breakdown.push("3 nested loops detected → cubic O(n³) time.");
+            timeIdx = Math.max(timeIdx, 5); // O(n^3)
+          } else {
+            breakdown.push(`${nesting} nested loops detected — polynomial O(n^${nesting}) time.`);
+            timeIdx = Math.max(timeIdx, 5);
+          }
+        }
+
+        // 3. Sorting detection
+        const hasSorting = /\b(sort|sorted|Arrays\.sort|Collections\.sort|std::sort|sort_values)\b/.test(src);
+        if (hasSorting) {
+          timeIdx = Math.max(timeIdx, 3); // O(n log n)
+          breakdown.push("Sorting operation detected (comparison-based sort) → at least O(n log n).");
+        }
+
+        // 4. Recursion detection
+        const rec = detectRecursion(src);
+        if (rec) {
+          if (rec.branches >= 2) {
+            timeIdx = Math.max(timeIdx, 6); // O(2^n)
+            breakdown.push(`Multi-branch recursion in \`${rec.name}\` (${rec.branches} calls per frame) → exponential O(2^n).`);
+            if (/memo|dp\[|cache|lru_cache|unordered_map|HashMap/.test(src)) {
+              timeIdx = Math.max(2, Math.min(timeIdx, 4));
+              breakdown.push("Memoization / DP cache detected — exponential branching avoided.");
+            }
+          } else {
+            timeIdx = Math.max(timeIdx, 2); // O(n)
+            breakdown.push(`Linear recursion in \`${rec.name}\` → O(n) recursive depth.`);
+          }
+        }
+
+        // 5. Backtracking / permutations
+        if (/\b(permutations|next_permutation|backtrack)\b/.test(src) && rec) {
+          timeIdx = Math.max(timeIdx, 7); // O(n!)
+          breakdown.push("Backtracking / permutation exploration detected → factorial O(n!).");
+        }
+
+        // 6. Data Structures & Auxiliary Space complexity
+        let space = "O(1)";
+        const hasHashMap =
+          /HashMap\s*<|unordered_map\s*<|\bmap\s*<|\bdict\(|new\s+Map\b|\bseen\s*=\s*\{\}|\bmap\s*\[|\bseen\s*\[|\bcount\s*=\s*\{\}/.test(bodyOnly);
+
+        const hasAuxArray =
+          /\bvector\s*<[A-Za-z0-9_<>\s]+>\s+[A-Za-z_]|ArrayList\s*<|new\s+\w+\[\s*(\w+|[0-9]+)\s*\]|\blist\(|\bseen\s*=\s*\[\]|\bres\s*=\s*\[\]/.test(bodyOnly);
+
+        const hasAuxSet =
+          /HashSet\s*<|unordered_set\s*<|\bset\s*<|\bset\(|new\s+Set\b/.test(bodyOnly);
+
+        if (hasHashMap) {
+          space = "O(n)";
+          breakdown.push("Hash map / dictionary allocated for lookups → O(n) auxiliary space.");
+        } else if (hasAuxArray || hasAuxSet) {
+          space = "O(n)";
+          breakdown.push("Auxiliary collection allocated → O(n) auxiliary space.");
+        }
+
+        if (/\[\s*\[|new\s+\w+\s*\[\s*\w+\s*\]\s*\[|vector\s*<\s*vector|dp\s*=\s*\[\[/.test(bodyOnly)) {
+          space = "O(n^2)";
+          breakdown.push("2D matrix or table allocated → O(n²) auxiliary space.");
+        }
+
+        if (rec && space === "O(1)") {
+          space = "O(n)";
+          breakdown.push("Call stack recursion depth requires O(n) auxiliary memory.");
+        }
+
+        if (space === "O(1)") {
+          breakdown.push("No dynamic auxiliary containers allocated → O(1) space.");
+        }
+
+        const time = ORDER[Math.min(timeIdx, ORDER.length - 1)];
+        const confidence = Math.min(95, 45 + breakdown.length * 12);
+        if (!breakdown.length) {
+          breakdown.push("Constant-time straight-line statements detected → O(1) time.");
+        }
+
+        const patterns = [];
+        if (isBinarySearch) patterns.push("Binary Search");
+        if (nesting >= 1) patterns.push(`${nesting}× loop`);
+        if (hasSorting) patterns.push("Sorting");
+        if (rec) patterns.push(rec.branches >= 2 ? "Branching recursion" : "Linear recursion");
+        if (/memo|dp\[|cache|lru_cache/.test(src)) patterns.push("Memoization / DP");
+        for (const [re, label] of DS_RULES) {
+          if (re.test(bodyOnly)) patterns.push(label);
+        }
+
+        const isOptimalTwoSum = hasHashMap && nesting === 1 && time === "O(n)";
+
+        const tips = generateSuggestions({
+          nesting,
+          rec,
+          space,
+          hasHash: hasHashMap,
+          memo: /memo|dp\[|cache|lru_cache/.test(src),
+          sorted: hasSorting,
+          isOptimalTwoSum,
+          isBinarySearch,
+        });
+
+        return {
+          time,
+          space,
+          confidence,
+          notes: breakdown,
+          patterns: Array.from(new Set(patterns)),
+          tips,
+          language,
+        };
+      }
+
+      function safeAnalyze(code, explicitLanguage) {
+        try {
+          return analyze(code, explicitLanguage);
+        } catch (err) {
+          return {
+            time: "—",
+            space: "—",
+            confidence: 0,
+            notes: ["Analysis error: " + (err && err.message ? err.message : "unknown")],
+            patterns: [],
+            tips: ["Could not parse code snippet."],
+            language: explicitLanguage || "—",
+            error: true,
+          };
+        }
+      }
+
+      const api = { analyze: safeAnalyze, detectLanguage, ORDER };
+      root.Codelexity = api;
+    })(typeof window !== "undefined" ? window : globalThis);
+  </script>
+
+  <!-- External scripts for extension integration -->
+  <script src="analyzer.js"></script>
+  <script src="content.js"></script>
+
+  <!-- Simulation Interactive Controller -->
+  <script>
+    const SNIPPETS = {
+      Python: `# LeetCode Python 3 Solution
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        seen = {}
+        for i, num in enumerate(nums):
+            diff = target - num
+            if diff in seen:
+                return [seen[diff], i]
+            seen[num] = i
+        return []`,
+
+      "C++": `// LeetCode C++ Solution
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> map;
+        for (int i = 0; i < nums.size(); i++) {
+            int complement = target - nums[i];
+            if (map.find(complement) != map.end()) {
+                return {map[complement], i};
+            }
+            map[nums[i]] = i;
+        }
+        return {};
+    }
+};`,
+
+      Java: `// LeetCode Java Solution
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                return new int[] { map.get(complement), i };
+            }
+            map.put(nums[i], i);
+        }
+        return new int[0];
+    }
+};`,
+
+      JavaScript: `// LeetCode JavaScript Solution
+var twoSum = function(nums, target) {
+    const map = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        map.set(nums[i], i);
+    }
+    return [];
+};`,
+
+      BinarySearch: `// LeetCode Binary Search C++
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int lo = 0, hi = nums.size() - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] < target) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+};`,
+
+      Fibonacci: `# LeetCode Fibonacci Python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n <= 1:
+            return n
+        return self.fib(n - 1) + self.fib(n - 2)`
+    };
+
+    const PROBLEMS = {
+      TwoSum: {
+        title: "1. Two Sum",
+        desc: "Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.<br><br>You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+        example: "<div class='ex-label'>Example 1:</div>Input: nums = [2,7,11,15], target = 9<br>Output: [0,1]<br>Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].",
+        followup: "<b>Follow-up:</b> Can you come up with an algorithm that is less than O(n²) time complexity?"
+      },
+      BinarySearch: {
+        title: "704. Binary Search",
+        desc: "Given an array of integers <code>nums</code> which is sorted in ascending order, and an integer <code>target</code>, write a function to search <code>target</code> in <code>nums</code>. If <code>target</code> exists, then return its index. Otherwise, return <code>-1</code>.",
+        example: "<div class='ex-label'>Example 1:</div>Input: nums = [-1,0,3,5,9,12], target = 9<br>Output: 4<br>Explanation: 9 exists in nums and its index is 4.",
+        followup: "<b>Follow-up:</b> You must write an algorithm with O(log n) runtime complexity."
+      },
+      Fibonacci: {
+        title: "509. Fibonacci Number",
+        desc: "The <b>Fibonacci numbers</b>, commonly denoted <code>F(n)</code> form a sequence, called the <b>Fibonacci sequence</b>, such that each number is the sum of the two preceding ones, starting from <code>0</code> and <code>1</code>.",
+        example: "<div class='ex-label'>Example 1:</div>Input: n = 4<br>Output: 3<br>Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.",
+        followup: "<b>Follow-up:</b> Can you optimize the exponential O(2^n) recursion using Dynamic Programming or Memoization to O(n)?"
+      }
+    };
+
+    const editor = document.getElementById("code-editor");
+    const editorLines = document.getElementById("editor-lines");
+    const editorLangTag = document.getElementById("editor-lang-tag");
+
+    function updateLineNumbers() {
+      const lineCount = (editor.value || "").split("\n").length;
+      let numbers = "";
+      for (let i = 1; i <= Math.max(lineCount, 12); i++) {
+        numbers += i + "<br>";
+      }
+      editorLines.innerHTML = numbers;
+    }
+
+    function runAnalysis(explicitLang) {
+      try {
+        const code = editor.value || "";
+        const t0 = performance.now();
+        const r = window.Codelexity.analyze(code, explicitLang);
+        const ms = Math.max(1, Math.round(performance.now() - t0));
+
+        const detectedLang = r.language || explicitLang || "Unknown";
+        document.getElementById("res-lang-pill").textContent = detectedLang;
+        document.getElementById("res-ms").textContent = ms + "ms";
+        document.getElementById("res-time").textContent = r.time || "—";
+        document.getElementById("res-space").textContent = r.space || "—";
+
+        // Also update floating badge if present
+        const floatingBadge = document.getElementById("codelexity-floating-panel");
+        if (floatingBadge) {
+          const fTime = floatingBadge.querySelector(".bol-time");
+          const fSpace = floatingBadge.querySelector(".bol-space");
+          const fLang = floatingBadge.querySelector(".bol-lang-pill");
+          const fMs = floatingBadge.querySelector(".bol-ms");
+
+          if (fTime) fTime.textContent = r.time || "—";
+          if (fSpace) fSpace.textContent = r.space || "—";
+          if (fLang) fLang.textContent = detectedLang;
+          if (fMs) fMs.textContent = `⚡ ${ms}ms`;
+        }
+      } catch (err) {
+        console.error("Error during analysis:", err);
+        document.getElementById("res-time").textContent = "Error";
+      }
+    }
+
+    function selectSnippet(key) {
+      let problemKey = "TwoSum";
+      let explicitLang = key;
+
+      if (key === "BinarySearch") {
+        problemKey = "BinarySearch";
+        explicitLang = "C++";
+      } else if (key === "Fibonacci") {
+        problemKey = "Fibonacci";
+        explicitLang = "Python";
+      }
+
+      // Update problem description
+      const p = PROBLEMS[problemKey];
+      if (p) {
+        document.getElementById("prob-title").innerHTML = p.title;
+        document.getElementById("prob-desc").innerHTML = p.desc;
+        document.getElementById("prob-example").innerHTML = p.example;
+        document.getElementById("prob-followup").innerHTML = p.followup;
+      }
+
+      // Update code editor
+      editor.value = SNIPPETS[key] || "";
+      editorLangTag.textContent = `${key} Solution`;
+      updateLineNumbers();
+
+      // Run complexity analysis
+      runAnalysis(explicitLang);
+    }
+
+    // Tab buttons
+    document.querySelectorAll(".lang-pill-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".lang-pill-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectSnippet(btn.getAttribute("data-lang"));
+      });
+    });
+
+    // Manual analyze button
+    document.getElementById("analyze-btn").addEventListener("click", () => {
+      const activeBtn = document.querySelector(".lang-pill-btn.active");
+      const activeLang = activeBtn ? activeBtn.getAttribute("data-lang") : null;
+      runAnalysis(activeLang === "BinarySearch" ? "C++" : (activeLang === "Fibonacci" ? "Python" : activeLang));
+    });
+
+    // Real-time analysis on code edit
+    let debounceTimer = null;
+    editor.addEventListener("input", () => {
+      updateLineNumbers();
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        const activeBtn = document.querySelector(".lang-pill-btn.active");
+        const activeLang = activeBtn ? activeBtn.getAttribute("data-lang") : null;
+        runAnalysis(activeLang === "BinarySearch" ? "C++" : (activeLang === "Fibonacci" ? "Python" : activeLang));
+      }, 250);
+    });
+
+    // Initial load: C++ Two Sum
+    selectSnippet("C++");
+  </script>
+</body>
+</html>
