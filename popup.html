@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Codelexity</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="dot"></span>
+        <h1>Codelexity</h1>
+      </div>
+      <div class="version">v1.2.0</div>
+    </header>
+
+    <main>
+      <!-- Meta status -->
+      <div class="meta-status-box">
+        <span class="platform-pill" id="popup-platform">LeetCode & GFG</span>
+        <span class="lang-pill" id="popup-lang">Auto</span>
+      </div>
+
+      <!-- Quick complexity metrics -->
+      <div class="section-title">LATEST COMPLEXITY</div>
+      <div class="grid-2">
+        <div class="metric-card">
+          <div class="card-label">TIME</div>
+          <div class="metric-val time-val" id="popup-time">—</div>
+        </div>
+        <div class="metric-card">
+          <div class="card-label">SPACE</div>
+          <div class="metric-val space-val" id="popup-space">—</div>
+        </div>
+      </div>
+
+      <!-- Settings group -->
+      <div class="section-title">SETTINGS</div>
+      <div class="settings-group">
+        <div class="setting-row">
+          <span class="setting-label">Real-time Analysis</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-realtime" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <span>Supported: C++, Java, Py, JS</span>
+      <span id="popup-runtime">⚡ Ready</span>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

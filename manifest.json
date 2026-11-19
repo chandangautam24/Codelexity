@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Codelexity \u2014 Code Complexity Analyzer",
+  "version": "1.2.0",
+  "description": "Static analysis of the code in your LeetCode and GeeksforGeeks editor: estimated time & space complexity, detected patterns and optimization suggestions.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://leetcode.com/*",
+    "https://www.geeksforgeeks.org/*",
+    "https://practice.geeksforgeeks.org/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://leetcode.com/*",
+        "https://www.geeksforgeeks.org/*",
+        "https://practice.geeksforgeeks.org/*"
+      ],
+      "js": [
+        "analyzer.js",
+        "content.js"
+      ],
+      "css": [
+        "overlay.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "simulation.html",
+        "icon.png"
+      ],
+      "matches": [
+        "https://leetcode.com/*",
+        "https://www.geeksforgeeks.org/*",
+        "https://practice.geeksforgeeks.org/*"
+      ]
+    }
+  ]
+}
