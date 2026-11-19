@@ -1,0 +1,343 @@
+/**
+ * Codelexity — Modern Dark Glassmorphic Design System
+ * Completely isolated with .codelexity-* CSS namespace
+ */
+
+:root {
+  --cx-bg-glass: rgba(15, 23, 42, 0.88);
+  --cx-bg-card: rgba(30, 41, 59, 0.7);
+  --cx-border-glass: rgba(255, 255, 255, 0.12);
+  --cx-border-glow: rgba(6, 182, 212, 0.35);
+  --cx-accent-cyan: #06b6d4;
+  --cx-accent-blue: #3b82f6;
+  --cx-accent-emerald: #10b981;
+  --cx-accent-amber: #f59e0b;
+  --cx-accent-rose: #f43f5e;
+  --cx-text-primary: #f8fafc;
+  --cx-text-secondary: #94a3b8;
+  --cx-text-muted: #64748b;
+  --cx-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --cx-radius-sm: 8px;
+  --cx-radius-md: 12px;
+  --cx-radius-lg: 18px;
+  --cx-shadow-glass: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --cx-shadow-badge: 0 8px 24px -4px rgba(6, 182, 212, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Container */
+.codelexity-widget-container {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483647 !important;
+  font-family: var(--cx-font-family) !important;
+  box-sizing: border-box !important;
+  direction: ltr !important;
+  color: var(--cx-text-primary) !important;
+  user-select: none !important;
+}
+
+.codelexity-widget-container * {
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+}
+
+/* Floating Circular Badge */
+.codelexity-circle-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 16px !important;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)) !important;
+  border: 1px solid var(--cx-border-glow) !important;
+  border-radius: 9999px !important;
+  color: var(--cx-text-primary) !important;
+  box-shadow: var(--cx-shadow-badge) !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.codelexity-circle-badge:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  border-color: var(--cx-accent-cyan) !important;
+  box-shadow: 0 12px 30px -4px rgba(6, 182, 212, 0.5) !important;
+}
+
+.codelexity-circle-icon {
+  font-size: 16px !important;
+  line-height: 1 !important;
+  color: var(--cx-accent-cyan) !important;
+}
+
+.codelexity-badge-text {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  color: #38bdf8 !important;
+}
+
+.codelexity-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background-color: var(--cx-accent-emerald) !important;
+  box-shadow: 0 0 10px var(--cx-accent-emerald) !important;
+  animation: codelexity-pulse 2s infinite !important;
+}
+
+.codelexity-dot.analyzing {
+  background-color: var(--cx-accent-amber) !important;
+  box-shadow: 0 0 10px var(--cx-accent-amber) !important;
+}
+
+.codelexity-dot.error {
+  background-color: var(--cx-accent-rose) !important;
+  box-shadow: 0 0 10px var(--cx-accent-rose) !important;
+}
+
+@keyframes codelexity-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Expanded Card */
+.codelexity-expanded-card {
+  width: 380px !important;
+  max-width: calc(100vw - 32px) !important;
+  background: var(--cx-bg-glass) !important;
+  border: 1px solid var(--cx-border-glass) !important;
+  border-radius: var(--cx-radius-lg) !important;
+  box-shadow: var(--cx-shadow-glass) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  overflow: hidden !important;
+  animation: codelexity-slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes codelexity-slide-up {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Card Header */
+.codelexity-card-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 16px 20px !important;
+  border-bottom: 1px solid var(--cx-border-glass) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.codelexity-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.codelexity-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  background: linear-gradient(135deg, #38bdf8, #818cf8) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.codelexity-header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.codelexity-runtime {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 3px 8px !important;
+  background: rgba(6, 182, 212, 0.12) !important;
+  color: var(--cx-accent-cyan) !important;
+  border-radius: 9999px !important;
+  border: 1px solid rgba(6, 182, 212, 0.25) !important;
+}
+
+.codelexity-close-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--cx-text-muted) !important;
+  font-size: 15px !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  line-height: 1 !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.codelexity-close-btn:hover {
+  color: var(--cx-text-primary) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Meta Row */
+.codelexity-meta-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 20px !important;
+  background: rgba(0, 0, 0, 0.15) !important;
+  border-bottom: 1px solid var(--cx-border-glass) !important;
+}
+
+.codelexity-platform-tag {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: var(--cx-text-secondary) !important;
+}
+
+.codelexity-confidence-pill {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  text-transform: uppercase !important;
+}
+
+.codelexity-confidence-pill.high {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.codelexity-confidence-pill.medium {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+.codelexity-confidence-pill.low {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+}
+
+.codelexity-lang-pill {
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+  border-radius: 9999px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 3px 10px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.codelexity-lang-pill:hover {
+  background: rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Body */
+.codelexity-card-body {
+  padding: 16px 20px 20px !important;
+  max-height: 480px !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+.codelexity-grid-2 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+.codelexity-metric-card {
+  background: var(--cx-bg-card) !important;
+  border: 1px solid var(--cx-border-glass) !important;
+  border-radius: var(--cx-radius-md) !important;
+  padding: 12px 14px !important;
+  text-align: center !important;
+}
+
+.codelexity-metric-label {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--cx-text-muted) !important;
+  margin-bottom: 6px !important;
+  text-transform: uppercase !important;
+}
+
+.codelexity-metric-val {
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.codelexity-time {
+  color: #38bdf8 !important;
+}
+
+.codelexity-space {
+  color: #a78bfa !important;
+}
+
+/* Sections */
+.codelexity-section {
+  background: rgba(15, 23, 42, 0.6) !important;
+  border: 1px solid var(--cx-border-glass) !important;
+  border-radius: var(--cx-radius-md) !important;
+  padding: 12px 14px !important;
+}
+
+.codelexity-section-title {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--cx-text-secondary) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 6px !important;
+}
+
+.codelexity-section-text {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  color: #cbd5e1 !important;
+}
+
+.codelexity-list {
+  margin: 0 !important;
+  padding-left: 16px !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  color: #cbd5e1 !important;
+}
+
+.codelexity-list li {
+  margin-bottom: 4px !important;
+}
+
+.codelexity-list li:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Tags */
+.codelexity-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.codelexity-tag {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--cx-text-secondary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}

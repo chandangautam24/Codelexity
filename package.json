@@ -1,0 +1,29 @@
+{
+  "name": "codelexity",
+  "version": "1.2.0",
+  "description": "Codelexity — Real-time Code Complexity Analyzer Chrome Extension for LeetCode & GeeksforGeeks",
+  "main": "analyzer.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "node src/tests/audit_matrix.js && node src/tests/integration.test.js && node tests/runAllTests.js && node test_runner.js",
+    "test:audit": "node src/tests/audit_matrix.js",
+    "test:integration": "node src/tests/integration.test.js",
+    "test:unit": "node tests/runAllTests.js",
+    "test:srs": "node test_runner.js"
+  },
+  "keywords": [
+    "chrome-extension",
+    "complexity-analyzer",
+    "leetcode",
+    "geeksforgeeks",
+    "ast",
+    "static-analysis",
+    "time-complexity",
+    "space-complexity"
+  ],
+  "author": "Codelexity Team",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
